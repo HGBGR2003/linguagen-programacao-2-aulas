@@ -1,9 +1,8 @@
 package br.edu.ifgoiano.aulas.henrique.gabriel;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Main {
     public static List<Estudante> filtrar(List<Estudante> lista, Predicate<Estudante> predicado) {
@@ -36,13 +35,48 @@ public class Main {
         try {
             for (Estudante e : turma) {
                 if (e.getEnergia() <= 0.0) {
-                    turma.remove(e); // ESTOURA ConcurrentModificationException!
+                    turma.remove(e);
                 }
             }
         } catch (ConcurrentModificationException e) {
             System.out.println("SISTEMA CAIU! O laço for-each não permite modificar a lista enquanto a lê.");
         }
+
+//        //Exercicio 1, use double se quiser converter para double.
+//        double totalInjetado = turma.stream()
+//                .filter(e -> e.getDinheiro() < 30 && e.getEnergia() < 40)
+//                .mapToDouble(e -> 100 - e.getDinheiro())
+//                .sum();
+//
+//        System.out.println("Total a ser injetado pela universidade: R$ " + totalInjetado);
+
+//        // Exercicio 2
+//        turma.stream()
+//                .sorted((e1,e2) -> {
+//                    double indiceAluno1 = (e1.getEnergia() * 0.6) + (e1.getDinheiro() * 0.4);
+//                    double indiceAluno2 = (e2.getEnergia() * 0.6) + (e2.getDinheiro() * 0.4);
+//                    return Double.compare(indiceAluno1, indiceAluno2);
+//                })
+//                .limit(3)
+//                .map(e -> e.getNome().toUpperCase())
+//                .forEach(System.out::println);
+
+        //Exercicio 3
+        Map<String, List<Estudante>> alunoRisco = turma.stream()
+                .collect(Collectors.groupingBy(e ->{
+                    if (e.getEnergia() <= 20 || e.getDinheiro() <= 10) {
+                        return "Critico";
+                    }else if (e.getEnergia() <= 50) {
+                        return "Alerta";
+                    }else{
+                        return "Estável";
+                    }
+                }));
+
+        alunoRisco.forEach((categoria, lista) -> {
+            System.out.println("\n=== " + categoria + " (" + lista.size() + " alunos) ===");
+            lista.forEach(e -> System.out.printf("- %s [Energia: %.1f%%, Dinheiro: R$ %.2f]%n",
+                    e.getNome(), e.getEnergia(), e.getDinheiro()));
+        });
     }
-
-
 }
