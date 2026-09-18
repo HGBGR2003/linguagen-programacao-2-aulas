@@ -20,9 +20,6 @@ Os arquivos estão separados por módulos ou dias de aula para facilitar a revis
 
 ```text
 📦 Aulas-LP2
- ┣ 📂 aula01_revisao          # Sintaxe básica e configuração do ambiente
- ┣ 📂 aula02_classes_objetos  # Modelagem inicial, atributos e métodos
- ┣ 📂 aula03_encapsulamento   # Getters, Setters e modificadores de acesso
- ┣ 📂 aula04_heranca          # Reutilização de código e palavra-chave 'super'
- ┣ 📂 aula05_polimorfismo     # Sobrescrita (Override) e Sobrecarga (Overload)
- ┗ 📜 README.md               # Este arquivo
+ ┣ 📂 aula12_manipulando_colecoes          
+ ┣ 📂 aula13_pratica_colecoes
+ ┗ 📜 README.md             
