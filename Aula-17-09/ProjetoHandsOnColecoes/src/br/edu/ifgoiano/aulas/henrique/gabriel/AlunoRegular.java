@@ -1,3 +1,5 @@
+package br.edu.ifgoiano.aulas.henrique.gabriel;
+
 class AlunoRegular extends Aluno {
     public AlunoRegular(String matricula, String nome, double energia, double dinheiro) {
         super(matricula, nome, energia, dinheiro);

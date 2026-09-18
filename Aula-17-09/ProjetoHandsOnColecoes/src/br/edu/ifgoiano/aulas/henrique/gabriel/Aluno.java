@@ -1,3 +1,5 @@
+package br.edu.ifgoiano.aulas.henrique.gabriel;
+
 import java.util.Objects;
 
 public abstract class Aluno {

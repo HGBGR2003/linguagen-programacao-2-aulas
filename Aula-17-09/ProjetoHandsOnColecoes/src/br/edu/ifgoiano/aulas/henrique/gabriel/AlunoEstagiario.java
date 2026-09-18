@@ -1,3 +1,5 @@
+package br.edu.ifgoiano.aulas.henrique.gabriel;
+
 public class AlunoEstagiario extends Aluno {
     private double bolsaEstagio;
 

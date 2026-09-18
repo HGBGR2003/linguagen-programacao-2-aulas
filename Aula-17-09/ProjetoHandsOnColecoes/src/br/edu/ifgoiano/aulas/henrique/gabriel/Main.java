@@ -1,6 +1,6 @@
+package br.edu.ifgoiano.aulas.henrique.gabriel;
+
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -22,7 +22,7 @@ public class Main {
         return turma;
     }
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         List<Aluno> turma = carregarTurma();
         System.out.println("Turma carregada com " + turma.size() + " alunos.");
 
@@ -31,7 +31,7 @@ public class Main {
         // System.out.println(aluno);
         // }
 
-        // for (Aluno aluno : turma) {
+        // for (br.edu.ifgoiano.aulas.henrique.gabriel.Aluno aluno : turma) {
         // System.out.println(aluno);
         // }
 
@@ -51,9 +51,9 @@ public class Main {
 
         // Usando uma List, adiciono todos os valores na lista, depois removo,
         // Todos usando o forEach, 
-        // List<Aluno> alunosRemover = new ArrayList<>();
+        // List<br.edu.ifgoiano.aulas.henrique.gabriel.Aluno> alunosRemover = new ArrayList<>();
 
-        // for (Aluno aluno : turma) {
+        // for (br.edu.ifgoiano.aulas.henrique.gabriel.Aluno aluno : turma) {
         //     if (aluno.getEnergia() <= 0) {
         //         alunosRemover.add(aluno);
         //     }
