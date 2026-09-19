@@ -1,6 +1,7 @@
 package br.edu.ifgoiano.aulas.henrique.gabriel;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class Main {
 
@@ -24,56 +25,102 @@ public class Main {
 
     static void main(String[] args) {
         List<Aluno> turma = carregarTurma();
-        System.out.println("Turma carregada com " + turma.size() + " alunos.");
+        // System.out.println("Turma carregada com " + turma.size() + " alunos.");
 
-        // for (int i = 0; i < turma.size(); i++) {
-        // String aluno = turma.get(i).toString();
-        // System.out.println(aluno);
-        // }
+        for (int i = 0; i < turma.size(); i++) {
+        String aluno = turma.get(i).toString();
+        System.out.println(aluno);
+        }
 
-        // for (br.edu.ifgoiano.aulas.henrique.gabriel.Aluno aluno : turma) {
-        // System.out.println(aluno);
-        // }
+        for (br.edu.ifgoiano.aulas.henrique.gabriel.Aluno aluno : turma) {
+        System.out.println(aluno);
+        }
 
-        // List<Double> notas = Arrays.asList(7.3, 5.8, 9.2, 6.4, 8.0, 10.0);
+        List<Double> notas = Arrays.asList(7.3, 5.8, 9.2, 6.4, 8.0, 10.0);
 
-        // double soma = 0;
-        // double media = 0;
+        double soma = 0;
+        double media = 0;
 
-        // for (Double double1 : notas) {
-        // soma += double1;
-        // }
+        for (Double double1 : notas) {
+        soma += double1;
+        }
 
-        // media = soma / notas.size();
+        media = soma / notas.size();
 
-        // System.out.println("Somatorio " + Math.floor(soma));
-        // System.out.println("Média " + Math.floor(media));
+        System.out.println("Somatorio " + Math.floor(soma));
+        System.out.println("Média " + Math.floor(media));
 
         // Usando uma List, adiciono todos os valores na lista, depois removo,
-        // Todos usando o forEach, 
-        // List<br.edu.ifgoiano.aulas.henrique.gabriel.Aluno> alunosRemover = new ArrayList<>();
+        // Todos usando o forEach,
+        List<br.edu.ifgoiano.aulas.henrique.gabriel.Aluno> alunosRemover = new
+        ArrayList<>();
 
-        // for (br.edu.ifgoiano.aulas.henrique.gabriel.Aluno aluno : turma) {
-        //     if (aluno.getEnergia() <= 0) {
-        //         alunosRemover.add(aluno);
-        //     }
-        // }
+        for (br.edu.ifgoiano.aulas.henrique.gabriel.Aluno aluno : turma) {
+        if (aluno.getEnergia() <= 0) {
+        alunosRemover.add(aluno);
+        }
+        }
 
-        // turma.removeAll(alunosRemover);
+        turma.removeAll(alunosRemover);
 
-        // System.out.println("Turma atual " + turma.size());
+        System.out.println("Turma atual " + turma.size());
 
         Iterator<Aluno> al = turma.iterator();
 
         while (al.hasNext()) {
-            Aluno aluno = al.next();
-            if (aluno.getEnergia() <= 0.0) {
-                al.remove();
-            }
+        Aluno aluno = al.next();
+        if (aluno.getEnergia() <= 0.0) {
+        al.remove();
+        }
         }
 
-        //Conteúdo Novo
+        // //Conteúdo Novo
+        // turma.forEach(System.out::println);
+
+        // Jeito Padrão de Escrever, sem ser em expressão lambda.
+        turma.forEach(new Consumer<Aluno>() {
+            @Override
+            public void accept(Aluno aluno) {
+                System.out.println(aluno.getNome());
+            }
+        });
+
+        turma.forEach(e -> System.out.println(e.getNome()));
+
+        // Metódo de referencia
         turma.forEach(System.out::println);
+        
+        List<String> nomesLisos = turma.stream()
+        .filter(e -> e.getDinheiro() < 30)
+        .map(Aluno::getNome)
+        .toList();
+
+        nomesLisos.forEach(System.out::println);
+
+        //Exercicio 1
+        double verba = turma.stream()
+        .filter(e -> e.getDinheiro() < 30 && e.getEnergia() < 40)
+        .mapToDouble(e -> 100 - e.getDinheiro())
+        .sum();
+
+        System.out.println("Dinheiro Ingetado: " + verba);
+
+        System.out.println("------------------------------------------");
+
+
+        //Exercicio 2
+        turma.stream()
+        .sorted((e1, e2) -> {
+            double indice1 = (e1.getEnergia() * 0.6) + (e1.getDinheiro() * 0.4);
+            
+            double indice2 = (e2.getEnergia() * 0.6) + (e2.getDinheiro() * 0.4);
+
+            return Double.compare(indice1, indice2);
+
+        })
+        .limit(3)
+        .map(e -> e.getNome())
+        .forEach(System.out::println);
 
     }
 }
