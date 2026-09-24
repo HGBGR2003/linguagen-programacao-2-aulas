@@ -1,0 +1,90 @@
+======================================
+  RELATÓRIO DA TURMA - MAPA POR STATUS
+======================================
+
+[ATIVO] - 9 aluno(s)
+--------------------------------------
+  Matricula : 20261EC001
+  Nome      : Lucas Santos
+  Token     : TOK-20261EC001
+  Energia   : 50.0%
+  Dinheiro  : R$ 15.0
+  ..............................
+  Matricula : 20261EC002
+  Nome      : Ana Vilela
+  Token     : TOK-20261EC002
+  Energia   : 80.0%
+  Dinheiro  : R$ 120.0
+  ..............................
+  Matricula : 20261EC003
+  Nome      : Bruno Carlos
+  Token     : TOK-20261EC003
+  Energia   : 60.0%
+  Dinheiro  : R$ 10.0
+  ..............................
+  Matricula : 20261EC004
+  Nome      : Carla Ferreira
+  Token     : TOK-20261EC004
+  Energia   : 90.0%
+  Dinheiro  : R$ 200.0
+  ..............................
+  Matricula : 20261EC007
+  Nome      : Ana Souza
+  Token     : TOK-20261EC007
+  Energia   : 65.0%
+  Dinheiro  : R$ 8.0
+  ..............................
+  Matricula : 20261EC009
+  Nome      : Carla Dias
+  Token     : TOK-20261EC009
+  Energia   : 15.0%
+  Dinheiro  : R$ 85.0
+  ..............................
+  Matricula : 20261EC010
+  Nome      : Diego Sato
+  Token     : TOK-20261EC010
+  Energia   : 85.0%
+  Dinheiro  : R$ 180.0
+  ..............................
+  Matricula : 20261EC011
+  Nome      : Fernanda Cruz
+  Token     : TOK-20261EC011
+  Energia   : 90.0%
+  Dinheiro  : R$ 250.0
+  ..............................
+  Matricula : 20261EC013
+  Nome      : Helena Rocha
+  Token     : TOK-20261EC013
+  Energia   : 70.0%
+  Dinheiro  : R$ 45.0
+  ..............................
+
+[TRANCADO] - 2 aluno(s)
+--------------------------------------
+  Matricula : 20261EC008
+  Nome      : Bruno Lima
+  Token     : TOK-20261EC008
+  Energia   : 45.0%
+  Dinheiro  : R$ 22.0
+  ..............................
+  Matricula : 20261EC012
+  Nome      : Gabriel Mendes
+  Token     : TOK-20261EC012
+  Energia   : 25.0%
+  Dinheiro  : R$ 310.0
+  ..............................
+
+[JUBILADO] - 2 aluno(s)
+--------------------------------------
+  Matricula : 20261EC005
+  Nome      : Dario Jubilado
+  Token     : TOK-20261EC005
+  Energia   : 0.0%
+  Dinheiro  : R$ 10.0
+  ..............................
+  Matricula : 20261EC006
+  Nome      : Lucas Silva
+  Token     : TOK-20261EC006
+  Energia   : 0.0%
+  Dinheiro  : R$ 12.5
+  ..............................
