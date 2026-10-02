@@ -11,7 +11,8 @@ import java.util.List;
 
 public class AlunoDAO {
     // Configuração do Banco H2 em Memória
-    // 'DB_CLOSE_DELAY=-1' mantém o banco em memória vivo enquanto a JVM estiver rodando
+    // 'DB_CLOSE_DELAY=-1' mantém o banco em memória vivo enquanto a JVM estiver
+    // rodando
     private static final String URL_H2 = "jdbc:h2:mem:perrenguedb;DB_CLOSE_DELAY=-1";
     private static final String USUARIO = "sa";
     private static final String SENHA = "";
@@ -30,7 +31,7 @@ public class AlunoDAO {
                 "status VARCHAR(20) NOT NULL)";
 
         try (Connection conn = obterConexao();
-             Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
 
             stmt.execute(sql);
             System.out.println("[H2 DAO] Tabela 'aluno' criada/verificada com sucesso!");
@@ -45,7 +46,7 @@ public class AlunoDAO {
         String sql = "INSERT INTO aluno (matricula, nome, energia, dinheiro, status) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = obterConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, aluno.getMatricula());
             stmt.setString(2, aluno.getNome());
@@ -67,8 +68,8 @@ public class AlunoDAO {
         String sql = "SELECT * FROM aluno";
 
         try (Connection conn = obterConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 String mat = rs.getString("matricula");
@@ -96,12 +97,13 @@ public class AlunoDAO {
         String sql = "SELECT * FROM aluno WHERE matricula = ?";
 
         try (Connection conn = obterConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, matricula);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return mapearResultSetParaAluno(rs); //Aqui poderia criar o aluno, mas defini um método para simplificar
+                    return mapearResultSetParaAluno(rs); // Aqui poderia criar o aluno, mas defini um método para
+                                                         // simplificar
                 }
             }
         } catch (SQLException e) {
@@ -115,7 +117,7 @@ public class AlunoDAO {
         String sql = "UPDATE aluno SET energia = ?, dinheiro = ?, status = ? WHERE matricula = ?";
 
         try (Connection conn = obterConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDouble(1, aluno.getEnergia());
             stmt.setDouble(2, aluno.getDinheiro());
@@ -136,7 +138,7 @@ public class AlunoDAO {
         String sql = "DELETE FROM aluno WHERE matricula = ?";
 
         try (Connection conn = obterConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, matricula);
             int linhasAfetadas = stmt.executeUpdate();
@@ -218,5 +220,113 @@ public class AlunoDAO {
         StatusMatricula status = StatusMatricula.valueOf(rs.getString("status"));
 
         return new AlunoRegular(mat, nome, energia, dinheiro, status, null);
+    }
+
+    // DDL: Criação da Tabela historico_perrengues
+    public void criacaoTabelaHistorico() {
+        String sql = "CREATE TABLE IF NOT EXISTS historico_perrengues (" +
+                "id          INT AUTO_INCREMENT PRIMARY KEY, " +
+                "matricula   VARCHAR(20)  NOT NULL, " +
+                "descricao   VARCHAR(255) NOT NULL, " +
+                "data        VARCHAR(10)  NOT NULL, " +
+                "FOREIGN KEY (matricula) REFERENCES aluno(matricula))";
+
+        try (Connection conn = obterConexao();
+                Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            System.out.println("[H2 DAO] Tabela 'historico_perrengues' criada/verificada com sucesso!");
+        } catch (SQLException e) {
+            System.err.println("[H2 DAO] Erro ao criar tabela histórico: " + e.getMessage());
+        }
+    }
+
+    public void concederAuxilioEmLote(List<String> matriculas, double valorAuxilio) {
+        String sql = "UPDATE aluno SET dinheiro = dinheiro + ? WHERE matricula = ?";
+
+        Connection conn = null;
+
+        try {
+            conn = obterConexao();
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                for (String matricula : matriculas) {
+                    stmt.setDouble(1, valorAuxilio);
+                    stmt.setString(2, matricula);
+                    stmt.addBatch();
+                }
+
+                int[] resultados = stmt.executeBatch();
+                int naoEncontrados = 0;
+
+                for (int r : resultados) {
+                    if (r == 0)
+                        naoEncontrados++;
+                }
+
+                conn.commit();
+                System.out.println("[LOTE OK] Auxílio de R$ " + valorAuxilio +
+                        " concedido para " + (matriculas.size() - naoEncontrados) + " aluno(s)." +
+                        (naoEncontrados > 0 ? " (" + naoEncontrados + " matrícula(s) não encontrada(s))" : ""));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[ROLLBACK] Falha no lote (" + e.getMessage() + "). Desfazendo alterações...");
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException sl) {
+                    sl.printStackTrace();
+                }
+            }
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException sl) {
+                    sl.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    public void adicionarPerrengue(String matricula, String descricao, String data) {
+        String sql = "INSERT INTO historico_perrengues (matricula, descricao, data) VALUES (?, ?, ?)";
+
+        try (Connection conn = obterConexao();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            stmt.setString(2, descricao);
+            stmt.setString(3, data);
+            System.out.println("[H2 DAO] Perrengue registrado para matrícula: " + matricula);
+        } catch (SQLException sl) {
+            System.err.println("[H2 DAO] Erro ao adicionar perrengue: " + sl.getMessage());
+        }
+    }
+
+    public List<HistoricoPerrengues> listarPerrengues(String matricula) {
+        List<HistoricoPerrengues> historico = new ArrayList<>();
+        String sql = "SELECT * FROM historico_perrengues WHERE matricula = ? ORDER BY data ASC";
+
+        try (Connection conn = obterConexao();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    HistoricoPerrengues h = new HistoricoPerrengues(
+                            rs.getInt("id"),
+                            rs.getString("matricula"),
+                            rs.getString("descricao"),
+                            rs.getString("data"));
+                    historico.add(h);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("[H2 DAO] Erro ao listar histórico: " + e.getMessage());
+        }
+        return historico;
     }
 }
