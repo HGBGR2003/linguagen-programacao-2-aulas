@@ -19,7 +19,13 @@ O objetivo aqui é manter um registro organizado de tudo o que foi codificado em
 Os arquivos estão separados por módulos ou dias de aula para facilitar a revisão na época de provas:
 
 ```text
-📦 Aulas-LP2
- ┣ 📂 aula12_manipulando_colecoes          
- ┣ 📂 aula13_pratica_colecoes
- ┗ 📜 README.md             
+📦 Aulas-Linguagem-Programação-2
+ ┣ 📂 Aula-16-09
+ ┃ ┗ 📂 ProjetoManipulandoColecoes
+ ┣ 📂 Aula-17-09
+ ┃ ┗ 📂 ProjetoHandsOnColecoes
+ ┣ 📂 Aula-23-09
+ ┃ ┗ 📂 ProjetoSerializacaoEEnumEstudante
+ ┣ 📂 Aula-01-10
+ ┃ ┗ 📂 ProjetoAlunoDAO
+ ┗ 📜 README.md     
