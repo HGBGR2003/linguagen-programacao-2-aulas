@@ -10,9 +10,10 @@ public class ConfiguracaoSistema {
 
     // 1. Construtor estritamente privado
     private ConfiguracaoSistema() {
-        this.urlBanco = "jdbc:h2:mem:perrenguedb;DB_CLOSE_DELAY=-1";
-        this.usuario = "sa";
-        this.senha = "";
+        this.urlBanco = System.getenv().getOrDefault(
+            "DB_URL", "jdbc:postgresql://127.0.0.1:5432/perrenguedb");
+        this.usuario = System.getenv().getOrDefault("DB_USER", "postgres");
+        this.senha = System.getenv().getOrDefault("DB_PASSWORD", "alunoguida22");
     }
 
     // 2. Metodo acessor thread-safe com inicializacao tardia (Lazy)

@@ -13,17 +13,16 @@ public class ConnectionFactory {
 
     public static Connection getConexao() throws SQLException {
         ConfiguracaoSistema config = ConfiguracaoSistema.getInstancia();
-        
+
         try {
             // Garante o carregamento do Driver JDBC na JVM
-            Class.forName("org.h2.Driver");
+            Class.forName("org.postgresql.Driver");
             return DriverManager.getConnection(
-                config.getUrlBanco(), 
-                config.getUsuario(), 
-                config.getSenha()
-            );
+                    config.getUrlBanco(),
+                    config.getUsuario(),
+                    config.getSenha());
         } catch (ClassNotFoundException e) {
-            throw new SQLException("Driver JDBC do H2 nao localizado no classpath!", e);
+            throw new SQLException("Driver JDBC do PostgreSQL nao localizado no classpath!", e);
         }
     }
 }

@@ -3,22 +3,23 @@ package br.edu.ifgoiano.aluno.aulas.henrique.gabriel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-// IMPLEMENTAÇÃO CONCRETA DO DAO UTILIZANDO JDBC E H2
+
+// IMPLEMENTAÇÃO CONCRETA DO DAO UTILIZANDO JDBC E POSTGRESQL
 public class AlunoDAOJDBC implements AlunoDAO {
 
     @Override
     public void inicializarTabela() {
         String sql = "CREATE TABLE IF NOT EXISTS aluno (" +
-                     "matricula VARCHAR(20) PRIMARY KEY, " +
-                     "nome VARCHAR(100) NOT NULL, " +
-                     "energia DOUBLE NOT NULL, " +
-                     "dinheiro DOUBLE NOT NULL, " +
-                     "status VARCHAR(20) NOT NULL)";
+                "matricula VARCHAR(20) PRIMARY KEY, " +
+                "nome VARCHAR(100) NOT NULL, " +
+                "energia REAL NOT NULL, " +
+                "dinheiro REAL NOT NULL, " +
+                "status VARCHAR(20) NOT NULL)";
 
         try (Connection conn = ConnectionFactory.getConexao();
-             Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            System.out.println("[DAO] Tabela 'aluno' pronta no H2.");
+            System.out.println("[DAO] Tabela 'aluno' pronta no PostgreSQL.");
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao inicializar tabela 'aluno'", e);
         }
@@ -29,7 +30,7 @@ public class AlunoDAOJDBC implements AlunoDAO {
         String sql = "INSERT INTO aluno (matricula, nome, energia, dinheiro, status) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, aluno.getMatricula());
             stmt.setString(2, aluno.getNome());
@@ -40,7 +41,7 @@ public class AlunoDAOJDBC implements AlunoDAO {
             stmt.executeUpdate();
             System.out.println("[DAO] Aluno '" + aluno.getNome() + "' salvo com sucesso.");
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao salvar aluno no banco H2", e);
+            throw new RuntimeException("Erro ao salvar aluno no PostgreSQL", e);
         }
     }
 
@@ -50,8 +51,8 @@ public class AlunoDAOJDBC implements AlunoDAO {
         String sql = "SELECT * FROM aluno";
 
         try (Connection conn = ConnectionFactory.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 String mat = rs.getString("matricula");
@@ -72,7 +73,7 @@ public class AlunoDAOJDBC implements AlunoDAO {
     public Aluno buscarPorMatricula(String matricula) {
         String sql = "SELECT * FROM aluno WHERE matricula = ?";
         try (Connection conn = ConnectionFactory.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, matricula);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -95,7 +96,7 @@ public class AlunoDAOJDBC implements AlunoDAO {
     public void atualizar(Aluno aluno) {
         String sql = "UPDATE aluno SET energia = ?, dinheiro = ?, status = ? WHERE matricula = ?";
         try (Connection conn = ConnectionFactory.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setDouble(1, aluno.getEnergia());
             stmt.setDouble(2, aluno.getDinheiro());
@@ -113,7 +114,7 @@ public class AlunoDAOJDBC implements AlunoDAO {
     public void deletar(String matricula) {
         String sql = "DELETE FROM aluno WHERE matricula = ?";
         try (Connection conn = ConnectionFactory.getConexao();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, matricula);
             stmt.executeUpdate();
