@@ -30,4 +30,6 @@ Os arquivos estão separados por módulos ou dias de aula para facilitar a revis
  ┃ ┗ 📂 ProjetoAlunoDAO
  ┣ 📂 Aula-14-10
  ┃ ┗ 📂 ProjetoConnectionFactoryDAO
+ ┣ 📂 Aula-15-10
+ ┃ ┗ 📂 NexusAlunoApp
  ┗ 📜 README.md     
